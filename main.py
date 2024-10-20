@@ -173,7 +173,7 @@ def ocna(message):
 
 @bot.message_handler(func=lambda message: True)
 def open_link(message):
-    url = message.text.strip()
+    url = message.text.strip()  # Извлечение ссылки из сообщения
     if not url.startswith('http'):
         bot.send_message(message.chat.id, 'Ссылка должна начинаться на https://(и тут ссылка).')
         return
@@ -181,6 +181,7 @@ def open_link(message):
     if not (parsed_url.scheme and parsed_url.netloc):
         bot.send_message(message.chat.id, 'Это не похоже на ссылку.')
         return
+
     excluded_domains = [
         'https://kekma.net', 'https://rt.pornhub.com', 'https://pornhub.com', 'https://www.xvideos.com',
         'https://www.pornhub.com', 'https://xvideos.com', 'http://kekma.net', 'http://rt.pornhub.com',
@@ -191,19 +192,33 @@ def open_link(message):
         'https://empflix.com', 'https://eporner.com', 'https://extremetube.com', 'https://fapdu.com', 'https://fapvid.com', 
         'https://fuq.com', 'https://gotporn.com', 'https://hclips.com', 'https://hdzog.com', 'https://hentaihaven.org', 
         'https://hoes.com', 'https://hottestfilms.xyz', 'https://imagefap.com', 'https://ixxx.com', 'https://keezmovies.com', 
-        'https://m.porn.com', 'https://mofosex.com', 'https://motherless.com', 'https://mylust.com', 'https://myvidster.com',
-        'https://nuvid.com', 'https://porn.com', 'https://pornmd.com', 'https://porntube.com', 'https://redtube.com',
-        'https://spankbang.com', 'https://spankwire.com', 'https://sunporno.com', 'https://theclassicporn.com',
-        'https://tnaflix.com', 'https://tubegalore.com', 'https://txxx.com', 'https://upornia.com', 'https://vid2c.com',
-        'https://viewporn.com', 'https://vporn.com', 'https://wankoz.com', 'https://xhamster.com', 'https://xozilla.com',
-        'https://xtube.com', 'https://youporn.com', 'https://zbporn.com' ]
-
-    for domain in excluded_domains:
-        if domain in url:
-            bot.send_message(message.chat.id, 'Эта ссылка запрещена.')
-        return
-
-webbrowser.open(url)
-bot.send_message(message.chat.id, 'Ссылка открыта.')
+        'https://m.porn.com', 'https://mofosex.com', 'https://nuvid.com', 'https://perfectgirls.net', 'https://porn.com', 
+        'https://porn555.com', 'https://pornburst.xxx', 'https://porndig.com', 'https://pornflip.com', 'https://pornhd.com', 
+        'https://pornhat.com', 'https://pornheed.com', 'https://pornhub.com', 'https://pornid.xxx', 'https://pornjam.com', 
+        'https://pornmaki.com', 'https://pornmd.com', 'https://pornone.com', 'https://pornoxo.com', 'https://pornrox.com', 
+        'https://pornstar.com', 'https://pornsticky.com', 'https://porntrex.com', 'https://pornwhite.com', 'https://pornworld.com', 
+        'https://redtube.com', 'https://sextvx.com', 'https://spankbang.com', 'https://spankwire.com', 'https://sunporno.com', 
+        'https://thehun.net', 'https://tnaflix.com', 'https://tube8.com', 'https://txxx.com', 'https://upornia.com', 
+        'https://videarn.com', 'https://videosection.com', 'https://vikiporn.com', 'https://vikiporn.com', 'https://worldsex.com', 
+        'https://xhamster.com', 'https://xvideos.com', 'https://xxx.com', 'https://youjizz.com', 'https://youporn.com',
+        'http://4tube.com', 'http://8tube.xxx', 'http://beeg.com', 'http://brazzers.com', 'http://drtuber.com', 
+        'http://empflix.com', 'http://eporner.com', 'http://extremetube.com', 'http://fapdu.com', 'http://fapvid.com', 
+        'http://fuq.com', 'http://gotporn.com', 'http://hclips.com', 'http://hdzog.com', 'http://hentaihaven.org', 
+        'http://hoes.com', 'http://hottestfilms.xyz', 'http://imagefap.com', 'http://ixxx.com', 'http://keezmovies.com', 
+        'http://m.porn.com', 'http://mofosex.com', 'http://nuvid.com', 'http://perfectgirls.net', 'http://porn.com', 
+        'http://porn555.com', 'http://pornburst.xxx', 'http://porndig.com', 'http://pornflip.com', 'http://pornhd.com', 
+        'http://pornhat.com', 'http://pornheed.com', 'http://pornhub.com', 'http://pornid.xxx', 'http://pornjam.com', 
+        'http://pornmaki.com', 'http://pornmd.com', 'http://pornone.com', 'http://pornoxo.com', 'http://pornrox.com', 
+        'http://pornstar.com', 'http://pornsticky.com', 'http://porntrex.com', 'http://pornwhite.com', 'http://pornworld.com', 
+        'http://redtube.com', 'http://sextvx.com', 'http://spankbang.com', 'http://spankwire.com', 'http://sunporno.com', 
+        'http://thehun.net', 'http://tnaflix.com', 'http://tube8.com', 'http://txxx.com', 'http://upornia.com', 
+        'http://videarn.com', 'http://videosection.com', 'http://vikiporn.com', 'http://vikiporn.com', 'http://worldsex.com', 
+        'http://xhamster.com', 'http://xvideos.com', 'http://xxx.com', 'http://youjizz.com', 'http://youporn.com'
+    ]
+    if any(parsed_url.netloc.lower().endswith(domain) for domain in excluded_domains):
+        bot.send_message(message.chat.id, 'Извините, но открытие ссылок на некоторые домены запрещено.')
+    else:
+        bot.send_message(message.chat.id, f'Открываю ссылку: {url}')
+        webbrowser.open(url)
 
 bot.polling(none_stop=True)
